@@ -14,8 +14,10 @@ public class LutadorPesado extends Lutador{
 
     @Override
     public void ataqueEspecial (Lutador oponente){
-        int gasto = 45;
-        oponente.energia -= gasto;
-        System.out.println(nome + " usou ataque especial removendo " + gasto + " de energia!");
+        int gasto = 15;
+        this.energia -= gasto;
+        oponente.vida -= gasto;
+        System.out.println(nome + " usou ataque especial removendo " + gasto + " de sua energia!");
+        System.out.println(oponente.nome + " perdeu " + gasto + " de vida!");
     }
 }
