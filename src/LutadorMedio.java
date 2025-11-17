@@ -1,5 +1,5 @@
 public class LutadorMedio extends Lutador{
-public LutadorMedio (String nome){
+    public LutadorMedio (String nome){
         super(nome, 120, 100, 20);
     }
 
@@ -10,13 +10,14 @@ public LutadorMedio (String nome){
         int dano = forca + 10;
         oponente.vida -= dano;
         System.out.println(nome + " atacou causando " + dano + " de dano!");
+        energia -= 7;
     }
 
     @Override
     public void ataqueEspecial (Lutador oponente){
         int gasto = 15;
         this.energia -= gasto;
-        oponente.vida -= gasto;
+        oponente.vida -= (forca + gasto);
         System.out.println(nome + " usou ataque especial removendo " + gasto + " de sua energia!");
         System.out.println(oponente.nome + " perdeu " + gasto + " de vida!");
     }

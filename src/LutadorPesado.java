@@ -10,13 +10,14 @@ public class LutadorPesado extends Lutador{
         int dano = forca + 20;
         oponente.vida -= dano;
         System.out.println(nome + " atacou causando " + dano + " de dano!");
+        energia -= 10;
     }
 
     @Override
     public void ataqueEspecial (Lutador oponente){
         int gasto = 15;
         this.energia -= gasto;
-        oponente.vida -= gasto;
+        oponente.vida -= (forca + gasto);
         System.out.println(nome + " usou ataque especial removendo " + gasto + " de sua energia!");
         System.out.println(oponente.nome + " perdeu " + gasto + " de vida!");
     }
