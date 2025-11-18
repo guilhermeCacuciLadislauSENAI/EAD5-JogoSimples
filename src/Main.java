@@ -1,13 +1,13 @@
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    static Scanner entrada = new Scanner(System.in);
 
-        Scanner entrada = new Scanner(System.in);
+    public static void main(String[] args) {
 
         System.out.print("Quantos lutadores deseja criar? ");
         int quantidade = entrada.nextInt();
-        entrada.nextLine(); // limpar buffer
+        entrada.nextLine();
 
         Lutador[] lutadores = new Lutador[quantidade];
 
@@ -23,7 +23,7 @@ public class Main {
             System.out.println("3 - Pesado");
             System.out.print("Escolha: ");
             int tipo = entrada.nextInt();
-            entrada.nextLine(); // limpar buffer
+            entrada.nextLine();
 
             switch (tipo) {
                 case 1:
@@ -42,12 +42,92 @@ public class Main {
         }
 
         // Mostra todos os lutadores criados
-        System.out.println("\n--- Lutadores cadastrados ---");
+        System.out.println("\n=== Lutadores cadastrados ===");
         for (Lutador l : lutadores) {
             l.mostrarStatus();
+            System.out.println("-----------------------------");
         }
 
-        Arena arena = new Arena();
-        arena.lutar(lutadores); // agora passa o array inteiro
+        int turno = 0;
+        int vivos;
+        do{
+
+            System.out.println("\n === TURNO " + (turno ++) + " ===");
+            for(int i = 0; i < lutadores.length; i++){
+                Lutador atacante = lutadores[i];
+
+                if(!atacante.estaVivo()) continue;
+
+                Lutador alvo = escolherAlvo(lutadores, i);
+                if(alvo == null) break;
+
+                System.out.println("Turno de: " + atacante.nome);
+                executarTurno(atacante, alvo);
+            }
+
+            vivos = contarVivos(lutadores);
+
+        }while(vivos > 1);
+
+        for(Lutador l : lutadores){
+            if(l.estaVivo()){
+                System.out.println("Fim da Luta");
+                System.out.println("Vencedor: " + l.nome);
+                break;
+            }
+        }
     }
+
+    // Criando um metodo para escolher um alvo
+    private static Lutador escolherAlvo(Lutador[] lutadores, int atacanteIndice){
+
+        for(int i = 0; i < lutadores.length; i++){
+            if(i != atacanteIndice && lutadores[i].estaVivo()){
+                return lutadores[i];
+            }
+        }
+        return null;
+
+    }
+
+    private static int contarVivos(Lutador[] lutadores){
+
+        int vivos = 0;
+        for(Lutador l : lutadores){
+            if(l.estaVivo()) return vivos++;
+        }
+        return vivos;
+
+    }
+
+    // Criando um metodo para executar um turno
+    private static void executarTurno(Lutador atacante, Lutador alvo){
+
+        System.out.println("Escolha uma opção: ");
+        System.out.println("1 - Ataque");
+        System.out.println("2 - Ataque especial");
+        System.out.println("3 - Defender");
+        int opcao = entrada.nextInt();
+
+        switch (opcao){
+
+            case 1:
+                atacante.atacar(alvo);
+                break;
+            case 2:
+                atacante.ataqueEspecial(alvo);
+                break;
+            case 3:
+                atacante.defender();
+                break;
+            default:
+                System.out.println("Opção inválida!");
+        }
+
+        System.out.println("Status atualizado: ");
+        atacante.mostrarStatus();
+        alvo.mostrarStatus();
+
+    }
+
 }
