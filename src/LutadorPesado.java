@@ -1,6 +1,6 @@
 public class LutadorPesado extends Lutador {
     public LutadorPesado(String nome) {
-        super(nome, 150, 100, 30);
+        super(nome, 150, 80, 30);
     }
 
     @Override
@@ -15,10 +15,19 @@ public class LutadorPesado extends Lutador {
 
     @Override
     public void ataqueEspecial(Lutador oponente) {
-        int gasto = 15;
+        int gasto = 25; // Aumentei o custo para refletir o alto dano base (força=30)
+
+        // Verificação de Energia Adicionada
+        if (energia < gasto) {
+            System.out.println(nome + " não tem energia suficiente (" + gasto + ") para o ataque especial!");
+            return;
+        }
+
         energia -= gasto;
-        oponente.vida -= (forca + gasto);
-        System.out.println(nome + " usou ataque especial!");
-        System.out.println(oponente.nome + " perdeu " + (forca + gasto) + " de vida!");
+        int dano = forca + gasto + 10; // Dano ligeiramente maior para o Pesado
+        oponente.vida -= dano;
+
+        System.out.println(nome + " usou ataque especial poderoso!");
+        System.out.println(oponente.nome + " perdeu " + dano + " de vida!");
     }
 }
