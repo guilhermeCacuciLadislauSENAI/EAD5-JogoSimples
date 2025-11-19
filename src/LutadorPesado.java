@@ -1,10 +1,10 @@
-public class LutadorPesado extends Lutador{
-    public LutadorPesado (String nome){
+public class LutadorPesado extends Lutador {
+    public LutadorPesado(String nome) {
         super(nome, 150, 100, 30);
     }
 
     @Override
-    public void atacar (Lutador oponente){
+    public void atacar(Lutador oponente) {
         if (oponente.tentarDesviar()) return;
 
         int dano = forca + 20;
@@ -14,11 +14,11 @@ public class LutadorPesado extends Lutador{
     }
 
     @Override
-    public void ataqueEspecial (Lutador oponente){
+    public void ataqueEspecial(Lutador oponente) {
         int gasto = 15;
-        this.energia -= gasto;
+        energia -= gasto;
         oponente.vida -= (forca + gasto);
-        System.out.println(nome + " usou ataque especial removendo " + gasto + " de sua energia!");
-        System.out.println(oponente.nome + " perdeu " + gasto + " de vida!");
+        System.out.println(nome + " usou ataque especial!");
+        System.out.println(oponente.nome + " perdeu " + (forca + gasto) + " de vida!");
     }
 }
