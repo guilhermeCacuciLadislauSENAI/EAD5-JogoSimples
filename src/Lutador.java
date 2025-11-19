@@ -19,8 +19,11 @@ public abstract class Lutador {
             energia += 20;
             System.out.println(nome + " recuperou 20 de energia.");
         } else {
+            energia -= 5;
+
             int reducao = forca;
             System.out.println(nome + " defendeu! Redução de dano: " + reducao);
+            System.out.println("Energia gasta: 5.");
         }
     }
 
@@ -32,12 +35,6 @@ public abstract class Lutador {
 
     public boolean estaVivo() {
         return vida > 0;
-    }
-
-    public void curar() {
-        this.vida += 20;
-        if (this.vida > 100) this.vida = 100;
-        System.out.println(nome + " se curou 20 pontos.");
     }
 
     public void curar(int pontos) {
