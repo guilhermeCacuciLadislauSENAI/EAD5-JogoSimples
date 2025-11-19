@@ -51,4 +51,13 @@ public abstract class Lutador {
         }
         return false;
     }
+
+    // NOVO METODO: Centraliza a lógica de recebimento de dano para garantir vida >= 0 (Requisito 1)
+    private void receberDano(int dano) {
+        this.vida -= dano;
+        if (this.vida < 0) {
+            this.vida = 0; // Força a vida a ser zero, impedindo valores negativos.
+            System.out.println(this.nome + " foi nocauteado!");
+        }
+    }
 }

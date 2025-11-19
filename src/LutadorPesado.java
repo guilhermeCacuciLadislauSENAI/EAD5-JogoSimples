@@ -5,27 +5,39 @@ public class LutadorPesado extends Lutador {
 
     @Override
     public void atacar(Lutador oponente) {
+        // REQUISITO 3: Consistência de Combate
+        if (!this.estaVivo() || !oponente.estaVivo()) {
+            System.out.println("Ataque não realizado. Lutador(es) nocauteado(s).");
+            return;
+        }
+
         if (oponente.tentarDesviar()) return;
 
         int dano = forca + 20;
-        oponente.vida -= dano;
+        oponente.receberDano(dano);
+
         System.out.println(nome + " atacou causando " + dano + " de dano!");
         energia -= 10;
     }
 
     @Override
     public void ataqueEspecial(Lutador oponente) {
-        int gasto = 25; // Aumentei o custo para refletir o alto dano base (força=30)
+        // REQUISITO 3: Consistência de Combate
+        if (!this.estaVivo() || !oponente.estaVivo()) {
+            System.out.println("Ataque Especial não realizado. Lutador(es) nocauteado(s).");
+            return;
+        }
 
-        // Verificação de Energia Adicionada
+        int gasto = 25;
+        // REQUISITO 2: Validação de Energia
         if (energia < gasto) {
-            System.out.println(nome + " não tem energia suficiente (" + gasto + ") para o ataque especial!");
+            System.out.println(nome + ": Energia insuficiente (" + gasto + ") para o ataque especial!");
             return;
         }
 
         energia -= gasto;
-        int dano = forca + gasto + 10; // Dano ligeiramente maior para o Pesado
-        oponente.vida -= dano;
+        int dano = forca + gasto + 10;
+        oponente.receberDano(dano);
 
         System.out.println(nome + " usou ataque especial poderoso!");
         System.out.println(oponente.nome + " perdeu " + dano + " de vida!");

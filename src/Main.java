@@ -1,16 +1,17 @@
 import java.util.*;
 
 public class Main {
+    // Mantém o Scanner como estático para uso em toda a classe
     static Scanner entrada = new Scanner(System.in);
 
     public static void main(String[] args) {
 
-        System.out.print("Quantos lutadores deseja criar? ");
-        int quantidade = entrada.nextInt();
-        entrada.nextLine();
+        // 1. Lendo a Quantidade de Lutadores (Com Try-Catch e Do-While)
+        int quantidade = lerQuantidade("Quantos lutadores deseja criar? ");
 
         Lutador[] lutadores = new Lutador[quantidade];
 
+        // Loop de Criação de Lutadores
         for (int i = 0; i < quantidade; i++) {
             System.out.println("\nCriando lutador " + (i + 1));
 
@@ -21,9 +22,9 @@ public class Main {
             System.out.println("1 - Leve");
             System.out.println("2 - Médio");
             System.out.println("3 - Pesado");
-            System.out.print("Escolha: ");
-            int tipo = entrada.nextInt();
-            entrada.nextLine();
+
+            // 2. Lendo o Tipo de Lutador (Com Try-Catch e Do-While)
+            int tipo = lerOpcaoMenu("Escolha: ");
 
             switch (tipo) {
                 case 1:
@@ -36,7 +37,7 @@ public class Main {
                     lutadores[i] = new LutadorPesado(nome);
                     break;
                 default:
-                    System.out.println("Tipo inválido! Criando lutador leve por padrão.");
+                    System.out.println("Opção inválida! Criando lutador leve por padrão.");
                     lutadores[i] = new LutadorLeve(nome);
             }
         }
@@ -50,6 +51,7 @@ public class Main {
         int turno = 1;
         int vivos;
 
+        // Loop principal da luta
         do {
             System.out.println("\n === TURNO " + (turno++) + " ===");
 
@@ -63,6 +65,7 @@ public class Main {
                 if (alvo == null) break;
 
                 System.out.println("\nTurno de: " + atacante.nome);
+                // 3. Execução do Turno (Com Try-Catch e Do-While)
                 executarTurno(atacante, alvo);
             }
 
@@ -70,6 +73,7 @@ public class Main {
 
         } while (vivos > 1);
 
+        // Exibição do Vencedor
         for (Lutador l : lutadores) {
             if (l.estaVivo()) {
                 System.out.println("\n===== FIM DA LUTA =====");
@@ -79,7 +83,47 @@ public class Main {
         }
     }
 
-    // Escolhe alvo aleatório vivo
+    // Método auxiliar para ler a quantidade de lutadores
+    private static int lerQuantidade(String prompt) {
+        int valor = 0;
+        boolean sucesso = false;
+
+        do {
+            System.out.print(prompt);
+            try {
+                valor = entrada.nextInt();
+                entrada.nextLine(); // Consome a quebra de linha
+                sucesso = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida! Por favor, digite apenas números inteiros.");
+                entrada.nextLine();
+            }
+        } while (!sucesso);
+
+        return valor;
+    }
+
+    // Metodo auxiliar para ler as opções de Menu (Tipo de Lutador ou Ação)
+    private static int lerOpcaoMenu(String prompt) {
+        int valor = 0;
+        boolean sucesso = false;
+
+        do {
+            System.out.print(prompt);
+            try {
+                valor = entrada.nextInt();
+                entrada.nextLine(); // Consome a quebra de linha
+                sucesso = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Opção inválida! Por favor, digite 1, 2 ou 3.");
+                entrada.nextLine();
+            }
+        } while (!sucesso);
+
+        return valor;
+    }
+
+    // Metodo auxiliar para escolher alvo (lógica original)
     private static Lutador escolherAlvo(Lutador[] lutadores, int atacanteIndice) {
 
         List<Lutador> possiveis = new ArrayList<>();
@@ -95,6 +139,7 @@ public class Main {
         return possiveis.get(new Random().nextInt(possiveis.size()));
     }
 
+    // Metodo auxiliar para contar vivos (lógica original)
     private static int contarVivos(Lutador[] lutadores) {
         int vivos = 0;
         for (Lutador l : lutadores) {
@@ -109,7 +154,9 @@ public class Main {
         System.out.println("1 - Ataque");
         System.out.println("2 - Ataque especial");
         System.out.println("3 - Defender");
-        int opcao = entrada.nextInt();
+
+        // 3. Leitura da Opção do Turno
+        int opcao = lerOpcaoMenu("Escolha: "); // Usa o metodo seguro
 
         switch (opcao) {
 
@@ -123,7 +170,7 @@ public class Main {
                 atacante.defender();
                 break;
             default:
-                System.out.println("Opção inválida!");
+                System.out.println("Opção inválida! O lutador perdeu o turno.");
         }
 
         System.out.println("\nStatus atualizado: ");
