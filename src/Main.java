@@ -1,4 +1,4 @@
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     static Scanner entrada = new Scanner(System.in);
@@ -41,67 +41,69 @@ public class Main {
             }
         }
 
-        // Mostra todos os lutadores criados
         System.out.println("\n=== Lutadores cadastrados ===");
         for (Lutador l : lutadores) {
             l.mostrarStatus();
             System.out.println("-----------------------------");
         }
 
-        int turno = 0;
+        int turno = 1;
         int vivos;
-        do{
 
-            System.out.println("\n === TURNO " + (turno ++) + " ===");
-            for(int i = 0; i < lutadores.length; i++){
+        do {
+            System.out.println("\n === TURNO " + (turno++) + " ===");
+
+            for (int i = 0; i < lutadores.length; i++) {
+
                 Lutador atacante = lutadores[i];
 
-                if(!atacante.estaVivo()) continue;
+                if (!atacante.estaVivo()) continue;
 
                 Lutador alvo = escolherAlvo(lutadores, i);
-                if(alvo == null) break;
+                if (alvo == null) break;
 
-                System.out.println("Turno de: " + atacante.nome);
+                System.out.println("\nTurno de: " + atacante.nome);
                 executarTurno(atacante, alvo);
             }
 
             vivos = contarVivos(lutadores);
 
-        }while(vivos > 1);
+        } while (vivos > 1);
 
-        for(Lutador l : lutadores){
-            if(l.estaVivo()){
-                System.out.println("Fim da Luta");
+        for (Lutador l : lutadores) {
+            if (l.estaVivo()) {
+                System.out.println("\n===== FIM DA LUTA =====");
                 System.out.println("Vencedor: " + l.nome);
                 break;
             }
         }
     }
 
-    // Criando um metodo para escolher um alvo
-    private static Lutador escolherAlvo(Lutador[] lutadores, int atacanteIndice){
+    // Escolhe alvo aleatório vivo
+    private static Lutador escolherAlvo(Lutador[] lutadores, int atacanteIndice) {
 
-        for(int i = 0; i < lutadores.length; i++){
-            if(i != atacanteIndice && lutadores[i].estaVivo()){
-                return lutadores[i];
+        List<Lutador> possiveis = new ArrayList<>();
+
+        for (int i = 0; i < lutadores.length; i++) {
+            if (i != atacanteIndice && lutadores[i].estaVivo()) {
+                possiveis.add(lutadores[i]);
             }
         }
-        return null;
 
+        if (possiveis.isEmpty()) return null;
+
+        return possiveis.get(new Random().nextInt(possiveis.size()));
     }
 
-    private static int contarVivos(Lutador[] lutadores){
-
+    private static int contarVivos(Lutador[] lutadores) {
         int vivos = 0;
-        for(Lutador l : lutadores){
-            if(l.estaVivo()) return vivos++;
+        for (Lutador l : lutadores) {
+            if (l.estaVivo()) vivos++;
         }
         return vivos;
-
     }
 
-    // Criando um metodo para executar um turno
-    private static void executarTurno(Lutador atacante, Lutador alvo){
+    private static void executarTurno(Lutador atacante, Lutador alvo) {
 
         System.out.println("Escolha uma opção: ");
         System.out.println("1 - Ataque");
@@ -109,7 +111,7 @@ public class Main {
         System.out.println("3 - Defender");
         int opcao = entrada.nextInt();
 
-        switch (opcao){
+        switch (opcao) {
 
             case 1:
                 atacante.atacar(alvo);
@@ -124,10 +126,8 @@ public class Main {
                 System.out.println("Opção inválida!");
         }
 
-        System.out.println("Status atualizado: ");
+        System.out.println("\nStatus atualizado: ");
         atacante.mostrarStatus();
         alvo.mostrarStatus();
-
     }
-
 }
